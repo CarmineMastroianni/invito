@@ -1,0 +1,299 @@
+:root {
+  --color-cream: #FFFFFF;
+  --color-green: #778773;
+  --color-green-light: #91A18D;
+  --color-white: #FFFFFF;
+  --color-dark: #2C2C2C;
+  --color-gray: #666666;
+  --font-display: 'Playfair Display', serif;
+  --font-script: 'Great Vibes', cursive;
+  --font-body: 'Montserrat', sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8F9F8 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(138, 154, 142, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(138, 154, 142, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#app {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 20px;
+}
+
+.container {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.header {
+  margin-bottom: 40px;
+  animation: fadeInDown 1s ease-out;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  color: var(--color-dark);
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.title .italic {
+  font-family: var(--font-script);
+  text-transform: none;
+  font-size: clamp(3rem, 7vw, 4rem);
+  font-weight: 400;
+  color: var(--color-green);
+  letter-spacing: 0;
+  margin: 0 10px;
+}
+
+.scratch-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 3/4;
+  margin: 0 auto 30px;
+  border-radius: 20px;
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(74, 124, 89, 0.2);
+  overflow: hidden;
+  background: white;
+}
+
+#scratch-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  z-index: 2;
+  touch-action: none;
+}
+
+#scratch-canvas:active {
+  cursor: grabbing;
+}
+
+.reveal-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #F8F9F8 100%);
+  z-index: 1;
+}
+
+.names {
+  font-family: var(--font-script);
+  font-size: clamp(3.5rem, 9vw, 5rem);
+  color: var(--color-green);
+  line-height: 1.2;
+  margin: 10px 0;
+  text-shadow: 0 2px 10px rgba(74, 124, 89, 0.2);
+}
+
+.ampersand {
+  font-family: var(--font-script);
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  color: var(--color-green-light);
+  margin: 5px 0;
+}
+
+.date {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3.5vw, 1.8rem);
+  color: var(--color-dark);
+  letter-spacing: 4px;
+  margin-top: 25px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.wedding-text {
+  font-family: var(--font-script);
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  color: var(--color-green);
+  margin-top: 20px;
+  text-shadow: 0 2px 10px rgba(74, 124, 89, 0.2);
+}
+
+.ornament {
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  color: var(--color-green-light);
+  margin-top: 25px;
+  opacity: 0.7;
+}
+
+.instruction {
+  animation: fadeIn 1s ease-out 0.5s backwards;
+}
+
+.instruction p {
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  color: var(--color-gray);
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+
+.actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 30px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.btn {
+  font-family: var(--font-body);
+  padding: 14px 35px;
+  border: 2px solid var(--color-green);
+  background: transparent;
+  color: var(--color-green);
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  background: var(--color-green);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(74, 124, 89, 0.3);
+}
+
+.btn-primary {
+  background: var(--color-green);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--color-green-light);
+  border-color: var(--color-green-light);
+}
+
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.confetti {
+  position: absolute;
+  opacity: 0;
+  animation: confetti-fall 3s ease-out forwards;
+  user-select: none;
+}
+
+@keyframes confetti-fall {
+  0% {
+    opacity: 1;
+    transform: translateY(-100vh) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(100vh) rotate(720deg);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0;
+  }
+  
+  .scratch-container {
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+  
+  .actions {
+    flex-direction: column;
+    padding: 0 20px;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

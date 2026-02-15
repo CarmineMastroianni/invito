@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Cristina & Carmine - Save the Date 18 Settembre 2026" />
+    <meta property="og:title" content="Cristina & Carmine - Save the Date" />
+    <meta property="og:description" content="Gratta per scoprire la data del nostro matrimonio!" />
+    <meta property="og:type" content="website" />
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+    
+    <title>Cristina & Carmine - Save the Date</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <div class="header">
+          <h1 class="title">Save <span class="italic">the</span> Date</h1>
+        </div>
+        
+        <div class="scratch-container">
+          <canvas id="scratch-canvas"></canvas>
+          <div class="reveal-content">
+            <div class="names">Maria Cristina</div>
+            <div class="ampersand">&</div>
+            <div class="names">Carmine</div>
+            <div class="date">18 Settembre 2026</div>
+            <div class="wedding-text">Ci sposiamo!</div>
+            <div class="ornament">✦</div>
+          </div>
+        </div>
+        
+        <div class="instruction" id="instruction">
+          <p>Gratta per scoprire una sorpresa speciale ✨</p>
+        </div>
+        
+        <div class="actions" id="actions" style="display: none;">
+          <button id="reset-btn" class="btn">Ricomincia</button>
+          <button id="share-btn" class="btn btn-primary">Condividi</button>
+        </div>
+        
+        <div class="confetti-container" id="confetti"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
