@@ -5,6 +5,9 @@ export class ScratchCard {
     this.isDrawing = false;
     this.isRevealed = false;
     this.dpr = window.devicePixelRatio || 1;
+    this.width = 0;
+    this.height = 0;
+    this.resizeObserver = null;
     
     // Options
     this.brushSize = options.brushSize || 40;
@@ -17,44 +20,64 @@ export class ScratchCard {
   }
   
   init() {
-    this.setCanvasSize();
-    this.drawScratchLayer();
     this.bindEvents();
+    this.handleResize();
     
     // Resize handler
     window.addEventListener('resize', this.handleResize);
     window.addEventListener('orientationchange', this.handleResize);
+
+    // Keep canvas synced with layout changes on mobile (dynamic viewport, font/CSS updates)
+    if ('ResizeObserver' in window) {
+      this.resizeObserver = new ResizeObserver(() => this.handleResize());
+      this.resizeObserver.observe(this.canvas.parentElement);
+    }
+
+    // Re-sync once all resources are loaded
+    window.addEventListener('load', this.handleResize, { once: true });
   }
 
   handleResize() {
-    this.setCanvasSize();
+    const changed = this.setCanvasSize();
+    if (!changed) return;
+
     if (!this.isRevealed) {
+      this.ctx.globalAlpha = 1;
+      this.ctx.globalCompositeOperation = 'source-over';
       this.drawScratchLayer();
+    } else {
+      this.ctx.clearRect(0, 0, this.width, this.height);
     }
   }
   
   setCanvasSize() {
-    const container = this.canvas.parentElement;
-    const rect = container.getBoundingClientRect();
+    const rect = this.canvas.getBoundingClientRect();
     const dpr = window.devicePixelRatio || 1;
+    const width = Math.max(1, Math.round(rect.width));
+    const height = Math.max(1, Math.round(rect.height));
+
+    if (width === this.width && height === this.height && dpr === this.dpr) {
+      return false;
+    }
+
+    this.width = width;
+    this.height = height;
     this.dpr = dpr;
     
     // Set canvas size to match container
-    this.canvas.width = Math.max(1, Math.round(rect.width * dpr));
-    this.canvas.height = Math.max(1, Math.round(rect.height * dpr));
+    this.canvas.width = Math.max(1, Math.round(width * dpr));
+    this.canvas.height = Math.max(1, Math.round(height * dpr));
     
     // Reset transform before applying scale to avoid cumulative zoom on resize
     this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.scale(dpr, dpr);
-    
-    // Set CSS size
-    this.canvas.style.width = rect.width + 'px';
-    this.canvas.style.height = rect.height + 'px';
+
+    return true;
   }
   
   drawScratchLayer() {
-    const width = this.canvas.width / this.dpr;
-    const height = this.canvas.height / this.dpr;
+    const width = this.width;
+    const height = this.height;
 
     // Create gradient background (bianco e verde)
     const gradient = this.ctx.createLinearGradient(0, 0, width, height);
@@ -77,8 +100,8 @@ export class ScratchCard {
   }
   
   addWhiteGreenTexture() {
-    const width = this.canvas.width / this.dpr;
-    const height = this.canvas.height / this.dpr;
+    const width = this.width;
+    const height = this.height;
 
     // Add random sparkle effect in white and light green
     for (let i = 0; i < 120; i++) {
@@ -189,8 +212,8 @@ export class ScratchCard {
         this.ctx.clearRect(
           0,
           0,
-          this.canvas.width / this.dpr,
-          this.canvas.height / this.dpr
+          this.width,
+          this.height
         );
         this.canvas.style.pointerEvents = 'none';
         this.onReveal();
@@ -208,6 +231,7 @@ export class ScratchCard {
     this.ctx.globalAlpha = 1;
     this.ctx.globalCompositeOperation = 'source-over';
     this.canvas.style.pointerEvents = 'auto';
+    this.setCanvasSize();
     this.drawScratchLayer();
   }
 }

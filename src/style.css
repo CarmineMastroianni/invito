@@ -313,7 +313,9 @@ body::before {
   }
 
   .scratch-container {
-    max-width: 100%;
+    width: min(100%, 360px);
+    max-width: 360px;
+    max-height: min(60dvh, 520px);
     margin-bottom: 20px;
     border-radius: 15px;
     aspect-ratio: 3/4;
@@ -400,7 +402,9 @@ body::before {
   }
 
   .scratch-container {
-    max-width: 450px;
+    width: min(100%, 420px);
+    max-width: 420px;
+    max-height: min(64dvh, 560px);
     margin-bottom: 25px;
     border-radius: 18px;
   }
