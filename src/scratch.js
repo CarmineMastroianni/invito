@@ -4,12 +4,14 @@ export class ScratchCard {
     this.ctx = canvas.getContext('2d', { willReadFrequently: true });
     this.isDrawing = false;
     this.isRevealed = false;
+    this.dpr = window.devicePixelRatio || 1;
     
     // Options
     this.brushSize = options.brushSize || 40;
     this.revealThreshold = options.revealThreshold || 70;
     this.onReveal = options.onReveal || (() => {});
     this.onScratch = options.onScratch || (() => {});
+    this.handleResize = this.handleResize.bind(this);
     
     this.init();
   }
@@ -20,24 +22,30 @@ export class ScratchCard {
     this.bindEvents();
     
     // Resize handler
-    window.addEventListener('resize', () => {
-      this.setCanvasSize();
-      if (!this.isRevealed) {
-        this.drawScratchLayer();
-      }
-    });
+    window.addEventListener('resize', this.handleResize);
+    window.addEventListener('orientationchange', this.handleResize);
+  }
+
+  handleResize() {
+    this.setCanvasSize();
+    if (!this.isRevealed) {
+      this.drawScratchLayer();
+    }
   }
   
   setCanvasSize() {
     const container = this.canvas.parentElement;
     const rect = container.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    this.dpr = dpr;
     
     // Set canvas size to match container
-    this.canvas.width = rect.width * window.devicePixelRatio;
-    this.canvas.height = rect.height * window.devicePixelRatio;
+    this.canvas.width = Math.max(1, Math.round(rect.width * dpr));
+    this.canvas.height = Math.max(1, Math.round(rect.height * dpr));
     
-    // Scale context to match device pixel ratio
-    this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    // Reset transform before applying scale to avoid cumulative zoom on resize
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+    this.ctx.scale(dpr, dpr);
     
     // Set CSS size
     this.canvas.style.width = rect.width + 'px';
@@ -45,8 +53,8 @@ export class ScratchCard {
   }
   
   drawScratchLayer() {
-    const width = this.canvas.width / window.devicePixelRatio;
-    const height = this.canvas.height / window.devicePixelRatio;
+    const width = this.canvas.width / this.dpr;
+    const height = this.canvas.height / this.dpr;
 
     // Create gradient background (bianco e verde)
     const gradient = this.ctx.createLinearGradient(0, 0, width, height);
@@ -69,8 +77,8 @@ export class ScratchCard {
   }
   
   addWhiteGreenTexture() {
-    const width = this.canvas.width / window.devicePixelRatio;
-    const height = this.canvas.height / window.devicePixelRatio;
+    const width = this.canvas.width / this.dpr;
+    const height = this.canvas.height / this.dpr;
 
     // Add random sparkle effect in white and light green
     for (let i = 0; i < 120; i++) {
@@ -91,10 +99,10 @@ export class ScratchCard {
     this.canvas.addEventListener('mouseleave', this.handleEnd.bind(this));
     
     // Touch events
-    this.canvas.addEventListener('touchstart', this.handleStart.bind(this));
-    this.canvas.addEventListener('touchmove', this.handleMove.bind(this));
-    this.canvas.addEventListener('touchend', this.handleEnd.bind(this));
-    this.canvas.addEventListener('touchcancel', this.handleEnd.bind(this));
+    this.canvas.addEventListener('touchstart', this.handleStart.bind(this), { passive: false });
+    this.canvas.addEventListener('touchmove', this.handleMove.bind(this), { passive: false });
+    this.canvas.addEventListener('touchend', this.handleEnd.bind(this), { passive: false });
+    this.canvas.addEventListener('touchcancel', this.handleEnd.bind(this), { passive: false });
   }
   
   handleStart(e) {
@@ -181,8 +189,8 @@ export class ScratchCard {
         this.ctx.clearRect(
           0,
           0,
-          this.canvas.width / window.devicePixelRatio,
-          this.canvas.height / window.devicePixelRatio
+          this.canvas.width / this.dpr,
+          this.canvas.height / this.dpr
         );
         this.canvas.style.pointerEvents = 'none';
         this.onReveal();
