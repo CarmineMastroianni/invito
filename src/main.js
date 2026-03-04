@@ -11,10 +11,11 @@ function init() {
   const resetBtn = document.getElementById('reset-btn');
   const shareBtn = document.getElementById('share-btn');
   const confettiContainer = document.getElementById('confetti');
+  const scratchSettings = getScratchSettings();
   
   scratchCard = new ScratchCard(canvas, {
-    brushSize: 50,
-    revealThreshold: 30,
+    brushSize: scratchSettings.brushSize,
+    revealThreshold: scratchSettings.revealThreshold,
     onReveal: () => {
       handleReveal(instruction, actions, confettiContainer);
     },
@@ -26,6 +27,24 @@ function init() {
   });
   
   shareBtn.addEventListener('click', handleShare);
+}
+
+function getScratchSettings() {
+  const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches;
+  const isPhoneWidth = window.matchMedia('(max-width: 768px)').matches;
+  const isPhone = isCoarsePointer && isPhoneWidth;
+
+  if (isPhone) {
+    return {
+      brushSize: 62,
+      revealThreshold: 15
+    };
+  }
+
+  return {
+    brushSize: 50,
+    revealThreshold: 30
+  };
 }
 
 function handleReveal(instruction, actions, confettiContainer) {
