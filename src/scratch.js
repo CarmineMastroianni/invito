@@ -202,10 +202,12 @@ export class ScratchCard {
 
     this.isRevealed = true;
 
-    // Faster fade out animation
+    // Slower fade-out for a smoother final reveal animation
+    const fadeStep = 0.04;
+    const fadeIntervalMs = 45;
     let alpha = 1;
     const fadeInterval = setInterval(() => {
-      alpha -= 0.15;
+      alpha -= fadeStep;
 
       if (alpha <= 0) {
         clearInterval(fadeInterval);
@@ -222,7 +224,7 @@ export class ScratchCard {
         this.ctx.globalCompositeOperation = 'source-over';
         this.drawScratchLayer();
       }
-    }, 30);
+    }, fadeIntervalMs);
   }
   
   reset() {
