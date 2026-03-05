@@ -195,12 +195,39 @@ body::before {
 }
 
 .calendar-options {
+  width: min(100%, 560px);
+  margin: 15px auto 0;
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(119, 135, 115, 0.25);
+  background: rgba(255, 255, 255, 0.85);
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.calendar-title {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  letter-spacing: 0.6px;
+  color: var(--color-gray);
+  margin-bottom: 12px;
+}
+
+.calendar-buttons {
   display: flex;
-  gap: 15px;
+  gap: 12px;
   flex-wrap: wrap;
   justify-content: center;
-  margin-top: 15px;
-  animation: fadeInUp 0.5s ease-out;
+}
+
+.calendar-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 220px;
+  text-decoration: none;
+  text-transform: none;
+  letter-spacing: 0.8px;
 }
 
 .btn {
@@ -373,9 +400,8 @@ body::before {
   }
 
   .calendar-options {
-    flex-direction: column;
-    gap: 12px;
-    padding: 0 15px;
+    width: 100%;
+    padding: 12px;
     margin-top: 12px;
   }
 
@@ -384,6 +410,21 @@ body::before {
     padding: 12px 30px;
     font-size: 0.9rem;
     letter-spacing: 1px;
+  }
+
+  .calendar-title {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+
+  .calendar-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .calendar-cta {
+    width: 100%;
+    min-width: 0;
   }
 }
 
@@ -468,8 +509,8 @@ body::before {
   }
 
   .calendar-options {
-    gap: 15px;
-    padding: 0 20px;
+    width: 100%;
+    padding: 14px;
     margin-top: 14px;
   }
 
@@ -478,6 +519,10 @@ body::before {
     min-width: 150px;
     padding: 13px 32px;
     font-size: 0.95rem;
+  }
+
+  .calendar-cta {
+    min-width: 180px;
   }
 }
 

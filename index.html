@@ -41,26 +41,27 @@
         
         <div class="actions" id="actions" style="display: none;">
           <button id="reset-btn" class="btn">Ricomincia</button>
-          <button id="calendar-btn" class="btn">Aggiungi al calendario</button>
-          <button id="share-btn" class="btn btn-primary">Condividi</button>
         </div>
         
         <div class="calendar-options" id="calendar-options" style="display: none;">
-          <a
-            id="google-calendar-link"
-            class="btn btn-primary"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Google Calendar
-          </a>
-          <a
-            id="apple-calendar-link"
-            class="btn"
-            href="/save-the-date.ics"
-          >
-            Apple Calendar
-          </a>
+          <p class="calendar-title">Aggiungi subito la data al tuo calendario</p>
+          <div class="calendar-buttons">
+            <a
+              id="google-calendar-link"
+              class="btn btn-primary calendar-cta"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              📅 Google Calendar
+            </a>
+            <a
+              id="apple-calendar-link"
+              class="btn calendar-cta"
+              href="/save-the-date.ics"
+            >
+              🍎 Apple Calendar
+            </a>
+          </div>
         </div>
         
         <div class="confetti-container" id="confetti"></div>
