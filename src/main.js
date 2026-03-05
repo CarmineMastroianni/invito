@@ -8,10 +8,15 @@ function init() {
   const canvas = document.getElementById('scratch-canvas');
   const instruction = document.getElementById('instruction');
   const actions = document.getElementById('actions');
+  const calendarOptions = document.getElementById('calendar-options');
   const resetBtn = document.getElementById('reset-btn');
+  const calendarBtn = document.getElementById('calendar-btn');
+  const googleCalendarLink = document.getElementById('google-calendar-link');
   const shareBtn = document.getElementById('share-btn');
   const confettiContainer = document.getElementById('confetti');
   const scratchSettings = getScratchSettings();
+
+  googleCalendarLink.href = buildGoogleCalendarUrl();
   
   scratchCard = new ScratchCard(canvas, {
     brushSize: scratchSettings.brushSize,
@@ -23,7 +28,12 @@ function init() {
   });
   
   resetBtn.addEventListener('click', () => {
-    handleReset(instruction, actions, confettiContainer);
+    handleReset(instruction, actions, calendarOptions, confettiContainer);
+  });
+
+  calendarBtn.addEventListener('click', () => {
+    const isVisible = calendarOptions.style.display === 'flex';
+    calendarOptions.style.display = isVisible ? 'none' : 'flex';
   });
   
   shareBtn.addEventListener('click', handleShare);
@@ -53,11 +63,23 @@ function handleReveal(instruction, actions, confettiContainer) {
   createConfetti(confettiContainer);
 }
 
-function handleReset(instruction, actions, confettiContainer) {
+function handleReset(instruction, actions, calendarOptions, confettiContainer) {
   scratchCard.reset();
   instruction.style.display = 'block';
   actions.style.display = 'none';
+  calendarOptions.style.display = 'none';
   clearConfetti(confettiContainer);
+}
+
+function buildGoogleCalendarUrl() {
+  const params = new URLSearchParams({
+    action: 'TEMPLATE',
+    text: 'Cristina & Carmine - Save the Date',
+    details: 'Il countdown è iniziato. Matrimonio il 18 Settembre 2026.',
+    dates: '20260918/20260919'
+  });
+
+  return `https://calendar.google.com/calendar/render?${params.toString()}`;
 }
 
 async function handleShare() {

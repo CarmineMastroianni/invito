@@ -194,6 +194,15 @@ body::before {
   animation: fadeInUp 0.5s ease-out;
 }
 
+.calendar-options {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 15px;
+  animation: fadeInUp 0.5s ease-out;
+}
+
 .btn {
   font-family: var(--font-body);
   padding: 14px 35px;
@@ -363,6 +372,13 @@ body::before {
     margin-top: 20px;
   }
 
+  .calendar-options {
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 15px;
+    margin-top: 12px;
+  }
+
   .btn {
     width: 100%;
     padding: 12px 30px;
@@ -449,6 +465,12 @@ body::before {
     gap: 15px;
     padding: 0 20px;
     margin-top: 25px;
+  }
+
+  .calendar-options {
+    gap: 15px;
+    padding: 0 20px;
+    margin-top: 14px;
   }
 
   .btn {
