@@ -223,11 +223,23 @@ body::before {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
   flex: 1;
   min-width: 220px;
   text-decoration: none;
   text-transform: none;
   letter-spacing: 0.8px;
+}
+
+.calendar-logo {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.calendar-label {
+  line-height: 1;
 }
 
 .btn {
