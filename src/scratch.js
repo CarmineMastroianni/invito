@@ -8,6 +8,8 @@ export class ScratchCard {
     this.width = 0;
     this.height = 0;
     this.resizeObserver = null;
+    this.revealFallbackTimeoutId = null;
+    this.revealTransitionEndHandler = null;
     
     // Options
     this.brushSize = options.brushSize || 40;
@@ -201,38 +203,64 @@ export class ScratchCard {
     if (this.isRevealed) return;
 
     this.isRevealed = true;
+    this.isDrawing = false;
+    this.canvas.style.pointerEvents = 'none';
 
-    // Slower fade-out for a smoother final reveal animation
-    const fadeStep = 0.04;
-    const fadeIntervalMs = 45;
-    let alpha = 1;
-    const fadeInterval = setInterval(() => {
-      alpha -= fadeStep;
+    const fadeDurationMs = 950;
+    let completed = false;
+    const completeReveal = () => {
+      if (completed) return;
+      completed = true;
 
-      if (alpha <= 0) {
-        clearInterval(fadeInterval);
-        this.ctx.clearRect(
-          0,
-          0,
-          this.width,
-          this.height
-        );
-        this.canvas.style.pointerEvents = 'none';
-        this.onReveal();
-      } else {
-        this.ctx.globalAlpha = alpha;
-        this.ctx.globalCompositeOperation = 'source-over';
-        this.drawScratchLayer();
+      if (this.revealTransitionEndHandler) {
+        this.canvas.removeEventListener('transitionend', this.revealTransitionEndHandler);
+        this.revealTransitionEndHandler = null;
       }
-    }, fadeIntervalMs);
+
+      if (this.revealFallbackTimeoutId !== null) {
+        clearTimeout(this.revealFallbackTimeoutId);
+        this.revealFallbackTimeoutId = null;
+      }
+
+      this.ctx.clearRect(0, 0, this.width, this.height);
+      this.onReveal();
+    };
+
+    if (this.revealTransitionEndHandler) {
+      this.canvas.removeEventListener('transitionend', this.revealTransitionEndHandler);
+    }
+    this.revealTransitionEndHandler = completeReveal;
+    this.canvas.addEventListener('transitionend', this.revealTransitionEndHandler);
+
+    this.revealFallbackTimeoutId = window.setTimeout(
+      completeReveal,
+      fadeDurationMs + 120
+    );
+
+    this.canvas.style.transition = `opacity ${fadeDurationMs}ms ease-out`;
+    requestAnimationFrame(() => {
+      this.canvas.style.opacity = '0';
+    });
   }
   
   reset() {
+    if (this.revealTransitionEndHandler) {
+      this.canvas.removeEventListener('transitionend', this.revealTransitionEndHandler);
+      this.revealTransitionEndHandler = null;
+    }
+
+    if (this.revealFallbackTimeoutId !== null) {
+      clearTimeout(this.revealFallbackTimeoutId);
+      this.revealFallbackTimeoutId = null;
+    }
+
     this.isRevealed = false;
     this.isDrawing = false;
     this.ctx.globalAlpha = 1;
     this.ctx.globalCompositeOperation = 'source-over';
     this.canvas.style.pointerEvents = 'auto';
+    this.canvas.style.transition = 'none';
+    this.canvas.style.opacity = '1';
     this.setCanvasSize();
     this.drawScratchLayer();
   }
