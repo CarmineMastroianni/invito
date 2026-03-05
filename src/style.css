@@ -175,6 +175,12 @@ body::before {
 
 .instruction {
   animation: fadeIn 1s ease-out 0.5s backwards;
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+.instruction.instruction-hide {
+  opacity: 0;
 }
 
 .instruction p {
@@ -191,7 +197,7 @@ body::before {
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 30px;
-  animation: fadeInUp 0.5s ease-out;
+  animation: fadeInUp 0.9s ease-out;
 }
 
 .calendar-options {
@@ -201,7 +207,7 @@ body::before {
   border-radius: 16px;
   border: 1px solid rgba(119, 135, 115, 0.25);
   background: rgba(255, 255, 255, 0.85);
-  animation: fadeInUp 0.5s ease-out;
+  animation: fadeInUp 0.9s ease-out;
 }
 
 .calendar-title {
